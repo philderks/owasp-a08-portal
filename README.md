@@ -64,6 +64,17 @@ Demo-Accounts (siehe `config/DataInitializer.java`):
    `target/dependency-check-report.html`, CVE-2015-7501 sichtbar. Screenshot in die Doku.
 3. Dependency entfernen/aktualisieren → Report sauber.
 
+### A07 — Brute-Force / CAPTCHA
+1. Auf `/login` zwei Mal absichtlich falsches Passwort für `user` eingeben.
+2. Ab dem 3. Versuch erscheint eine Rechenaufgabe (`CaptchaService`) im Formular;
+   ohne (oder mit falscher) Antwort wird der Request von `CaptchaFilter`
+   **vor** dem `AuthenticationManager` abgewiesen — auch mit korrektem Passwort.
+3. Nach `app.login.max-attempts` (Default 5) Fehlversuchen sperrt
+   `LoginAttemptService` den Account für `app.login.lock-minutes` Minuten →
+   Event `ACCOUNT_LOCKED` im Log, Login schlägt auch mit korrektem Passwort fehl.
+4. Parallel: 10 schnelle POSTs auf `/login` (z. B. per Skript) → `RateLimitFilter`
+   antwortet mit `429`, Event `RATE_LIMITED` im Log — pro IP, unabhängig vom Account.
+
 ## Architektur
 
 Request-Pfad (vereinfachte Filter-Chain):
