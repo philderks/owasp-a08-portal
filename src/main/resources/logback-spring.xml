@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- key=value events from SecurityAuditLogger stay greppable here.
+                 For real structured logging, add net.logstash.logback:logstash-logback-encoder
+                 and swap this for a <encoder class="...LogstashEncoder"/> to emit JSON. -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%logger{20}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="ch.bbw.owasp.security.SecurityAuditLogger" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>My files</title>
+</head>
+<body>
+<h1>My files</h1>
+<p>Signed in as <span sec:authentication="name">user</span>
+   (<span sec:authentication="authorities">roles</span>)</p>
+
+<p th:if="${message}" style="color:#0f6e56" th:text="${message}"></p>
+<p th:if="${error}" style="color:#a32d2d" th:text="${error}"></p>
+
+<form th:action="@{/files/upload}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" required>
+    <button type="submit">Upload</button>
+</form>
+
+<table border="1" cellpadding="6">
+    <thead>
+    <tr><th>Name</th><th>Type</th><th>SHA-256</th><th>Size</th><th></th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="f : ${files}">
+        <td th:text="${f.originalName}"></td>
+        <td th:text="${f.contentType}"></td>
+        <td style="font-family:monospace" th:text="${f.sha256}"></td>
+        <td th:text="${f.sizeBytes}"></td>
+        <td><a th:href="@{'/files/' + ${f.id} + '/download'}">Download</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
+</body>
+</html>

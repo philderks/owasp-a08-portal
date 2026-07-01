@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:portal;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+  h2:
+    console:
+      enabled: true          # DEV ONLY — disable in prod (A02 Security Misconfiguration)
+      path: /h2-console
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  thymeleaf:
+    cache: false
+
+# A08: where uploaded blobs are stored. The DB only holds metadata + the SHA-256.
+app:
+  storage-dir: ./data/uploads
+  allowed-mime-types: image/png,image/jpeg,application/pdf
+  login:
+    max-attempts: 5
+    lock-minutes: 15
+    captcha-after: 2
+
+logging:
+  level:
+    ch.bbw.owasp.security.SecurityAuditLogger: INFO
+    org.springframework.security: WARN

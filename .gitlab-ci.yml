@@ -1,0 +1,28 @@
+stages:
+  - build
+  - security
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository
+
+build:
+  stage: build
+  image: maven:3.9-eclipse-temurin-21
+  script:
+    - mvn -B clean package
+
+dependency-check:
+  stage: security
+  image: maven:3.9-eclipse-temurin-21
+  script:
+    # Needs an NVD API key in CI/CD variable NVD_API_KEY to be fast.
+    - mvn -B org.owasp:dependency-check-maven:check -DnvdApiKey=$NVD_API_KEY
+  artifacts:
+    when: always
+    paths:
+      - target/dependency-check-report.html
+  allow_failure: false

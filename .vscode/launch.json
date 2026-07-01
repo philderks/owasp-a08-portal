@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PortalApplication<owasp-a08-portal>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "ch.bbw.owasp.PortalApplication",
+            "projectName": "owasp-a08-portal",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

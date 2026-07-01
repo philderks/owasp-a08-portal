@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<h1>Login</h1>
+
+<p th:if="${param.error}" style="color:#a32d2d">Invalid credentials or account locked.</p>
+<p th:if="${param.logout}" style="color:#0f6e56">You have been logged out.</p>
+
+<form th:action="@{/login}" method="post">
+    <div>
+        <label>Username <input type="text" name="username" th:value="${username}" required></label>
+    </div>
+    <div>
+        <label>Password <input type="password" name="password" required></label>
+    </div>
+    <!-- A06/A07: shown after a few failed attempts; verified server-side by
+         CaptchaFilter before the AuthenticationManager runs. -->
+    <div th:if="${captchaRequired}">
+        <label th:text="${captchaQuestion}">CAPTCHA</label>
+        <input type="text" name="captcha" required>
+    </div>
+    <button type="submit">Sign in</button>
+</form>
+</body>
+</html>
